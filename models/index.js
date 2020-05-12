@@ -6,6 +6,7 @@ mongoose.Promise = global.Promise;
 const db = {};
 db.mongoose = mongoose;
 db.url = dbConfig.url;
-db.clientsReservation = require("./clientReservation.model.js")(mongoose);
+db.clientModel = require("./clientModel.js")(mongoose);
+db.reservationModel = require("./reservationModel")(mongoose);
 
 module.exports = db;
