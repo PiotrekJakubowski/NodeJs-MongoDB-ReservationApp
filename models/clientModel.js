@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-const Reservation = require('./reservationModel.js');
-const Court = require('./courtModel.js');
 const Schema = mongoose.Schema;
 
 const ClientSchema = new Schema({
@@ -8,7 +6,15 @@ const ClientSchema = new Schema({
     lastName: String,
     phoneNumber: String,
     email: String,
-    reservation: [{ type: Schema.Types.ObjectId, ref: 'Reservation'}]
+    reservation: [{
+        court: String,
+        date: String
+    }]
 });
 
-module.exports = mongoose.model('Client', ClientSchema);
+
+const clientSchema = mongoose.model('Client', ClientSchema);
+
+module.exports = {
+    Client: clientSchema,
+}

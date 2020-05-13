@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head> </head>
+  <body>
+    <% if (reservationCourt) { %> 
+    <form method="post" action="">
+        <input type="number" min="1" name="court" value="<%= reservationCourt %>" required/>
+        <br>
+        <input type="datetime-local" name="date" value="<%= reservationDate %>" required/>
+        <br>
+        <input type="submit" value="Edit Reservation">
+    </form>    
+    <% } else { %>
+    <p>Reservation Not Found. Go <a href="/web/addReservation">here</a> to add reservations.</p>
+    <% } %>
+    <hr>
+    <a href="/web/clients">Go Back To Clients List</a>
+  </body>
+</html>

@@ -22,8 +22,12 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
+
 require("./routes/ApiRoutes/clientRoutes")(app);
 require("./routes/ApiRoutes/reservationRoutes")(app);
+
+var webRoutes = require('./routes/WebRoutes/webRoutes');
+webRoutes(app);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

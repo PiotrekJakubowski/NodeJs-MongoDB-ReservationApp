@@ -1,6 +1,6 @@
 module.exports = app => {
     const clientMethod = require("../../controllers/RestApi/clientController.js");
-
+    
     var router = require("express").Router();
 
     router.get("/", clientMethod.find_all_clients);

@@ -3,8 +3,6 @@ module.exports = app => {
 
     var router = require("express").Router();
 
-    // router.post("/", clientMethod.create);
-
     router.get("/", reservationMethod.find_all);
 
     router.get("/client/:clientId", reservationMethod.find_by_client_id);
@@ -13,11 +11,11 @@ module.exports = app => {
 
     router.put("/:id", reservationMethod.reservation_update);
 
-    router.delete("/:id", reservationMethod.remove_by_reservation_id);
+    router.delete("/:id/:clientId", reservationMethod.remove_by_reservation_id);
 
     router.delete("/", reservationMethod.remove_all_reservations);
 
-    router.delete("/clients/:clientId", reservationMethod.remove_all_client_reservations);
+    //router.delete("/clients/:clientId", reservationMethod.remove_all_client_reservations);
 
     app.use('/api/reservation', router);
 };

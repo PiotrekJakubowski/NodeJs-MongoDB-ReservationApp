@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head> </head>
+  <body>
+    <% if (client) { %> 
+    <form method="post" action="">
+        <input type="text" name="firstName" value="<%= client.firstName %>" required/>
+        <br>
+        <input type="text" name="lastName" value="<%= client.lastName %>" required/>
+        <br>
+        <input type="number" name="phoneNumber" value="<%= client.phoneNumber %>" min="0" max="999999999" required/>
+        <br>
+        <input type="text" name="email" value="<%= client.email %>" required/>
+        <br>
+        <input type="submit" value="Edit Client">
+    </form>    
+    <% } else { %>
+    <p>Client Not Found. Go <a href="/web/addClient">here</a> to add clients.</p>
+    <% } %>
+    <hr>
+    <a href="/web/clients">Go Back To Clients List</a>
+  </body>
+</html>

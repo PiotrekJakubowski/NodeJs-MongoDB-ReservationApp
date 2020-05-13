@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+  <head>
+    <style>
+    table, th, td {
+      border: 1px solid black;
+    }
+    </style>
+  </head>
+
+  <body>
+    <div>
+      <div>
+        <% if (client.length > 0) {%>
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">First Name</th>
+              <th scope="col">Last Name</th>
+              <th scope="col">Email</th>
+              <th scope="col">Phone Number</th>
+              <th scope="col">Client Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% client.forEach((client, index) => { %>
+            <tr>
+              <td><%= client.id %></td>
+              <td><%= client.firstName %></td>
+              <td><%= client.lastName %></td>
+              <td><%= client.email %></td>
+              <td><%= client.phoneNumber %></td>
+              <td>
+                <a href="/web/editClient/<%= client.id %>" >Edit</a>
+                |
+                <a href="/web/deleteClient/<%= client.id %>" onclick="return confirm('Are you sure you want to delete the client?');">Delete</a>
+                -----> 
+                <a href="/web/clientReservations/<%= client.id %>">Show Client Reservation</a>
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+        <% } else { %>
+        <p>No client found.</p>
+        <% } %>
+      </div>
+      <hr>
+        <a href="/web/addClient">Add Client</a>
+    </div>
+  </body>
+</html>

@@ -1,5 +1,5 @@
-const Client = require('../../models/clientModel.js');
-const Reservation = require('../../models/reservationModel.js');
+const clientModel = require('../../models/clientModel.js');
+const Client = clientModel.Client;
 
 exports.create_reservation_for_client = (req, res) => {
     let clientId = req.params.clientId;
@@ -7,41 +7,22 @@ exports.create_reservation_for_client = (req, res) => {
 
     console.log(reservationArray);
 
-    Client.findById(clientId, function (err, result) {
+    Client.findByIdAndUpdate(clientId, {
+        $push: {
+            reservation: reservationArray
+        }
+    }, function (err, result) {
         if (err) return next(err);
 
-        var client = result;
 
-        client.save(function (err) {
-            if (err) {
-                return next(err);
-            }
-
-            for (var i = 0; i < reservationArray.length; i++) {
-
-                let courtTemp = reservationArray[i].court;
-                let dateTemp = reservationArray[i].date
-
-                let reservation = new Reservation({
-                    court: courtTemp,
-                    date: dateTemp,
-                    client: client._id
-                });
-
-                reservation.save(function (err) {
-                    if (err) return console.error(err.stack)
-                })
-            };
-
-            res.send('Reservation for client created successfully');
-        })
+        res.send('Reservation for client added successfully');
     })
 };
 
 exports.find_all = (req, res) => {
-    Reservation.find()
-        .then(reservations => {
-            res.send(reservations);
+    Client.find()
+        .then(client => {
+            res.send(client.reservation);
         }).catch(err => {
             res.status(500).send({
                 message: err.message
@@ -61,10 +42,10 @@ exports.reservation_update = function (req, res) {
 
 exports.find_by_client_id = (req, res) => {
     console.log("Reservation find by Client ID method with param: " + req.params.clientId);
-    Reservation.find({
-            client: req.params.clientId
+    Client.find({
+            _id: req.params.clientId
         })
-        .exec(function (err, reservations) {
+        .exec(function (err, reservation) {
             if (err) {
                 if (err.kind === 'ObjectId') {
                     return res.status(404).send({
@@ -76,7 +57,7 @@ exports.find_by_client_id = (req, res) => {
                 });
             }
 
-            res.send(reservations);
+            res.send(reservation);
         });
 };
 
@@ -89,22 +70,27 @@ exports.remove_all_reservations = (req, res) => {
 
 exports.remove_by_reservation_id = (req, res) => {
     let reservationId = req.params.id;
-    Reservation.findByIdAndRemove(reservationId, function (err) {
+    let clientId = req.params.clientId
+    Client.findByIdAndUpdate(clientId, {
+        "$pull": {
+            "reservation": {
+                "_id": reservationId
+            }
+        }
+    }, function (err, result) {
         if (err) return next(err);
         res.send('Deleted reservation with id: ' + reservationId + ' successfully!');
     })
 };
 
-exports.remove_all_client_reservations = (req, res) => {
-    let clientId = req.params.clientId;
-    let query = {
-        client: clientId
-    };
+// ToDo:
+// exports.remove_all_client_reservations = (req, res) => {
+//     let clientId = req.params.clientId;
 
-    Reservation.deleteMany(query, (err, reservations) => {
-        if (err) throw err;
-        console.log("Record(s) deleted successfully");
-        console.log(reservations);
-        res.send("Record(s) deleted successfully");
-    })
-};
+//     Client.findByIdAndUpdate(clientId, {
+//         "$set": { "reservation": [] }
+//     }, function(err, result) {
+//         if (err) return next(err);
+//         res.send('Deleted reservations with id: ' + reservationId + ' successfully!');
+//     });
+// };
